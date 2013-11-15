@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center_horizontal"
+    >
+
+    <EditText
+        android:id="@+id/text_input"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        />
+
+    <Button
+        android:id="@+id/btn_add_note"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:text="Add Note"
+        android:layout_marginTop="10dip"
+        android:layout_below="@+id/text_input"
+        />
+
+</RelativeLayout>
+
