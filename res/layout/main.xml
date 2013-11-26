@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:orientation="vertical"
               android:gravity="center_horizontal"
     >
 
@@ -13,13 +14,20 @@
         />
 
     <Button
+        android:id="@+id/btn_choose_color"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:background="@drawable/circle_red"
+        android:layout_marginTop="10dip"
+        />
+
+    <Button
         android:id="@+id/btn_add_note"
         android:layout_width="200dip"
         android:layout_height="wrap_content"
         android:text="Add Note"
         android:layout_marginTop="10dip"
-        android:layout_below="@+id/text_input"
         />
 
-</RelativeLayout>
+</LinearLayout>
 
