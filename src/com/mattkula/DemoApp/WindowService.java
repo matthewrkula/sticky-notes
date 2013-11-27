@@ -1,5 +1,7 @@
 package com.mattkula.DemoApp;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 
 public class WindowService extends Service {
 
-    public static final String ACTION = "CREATE_NOTE";
+    public static final String ACTION = "com.mattkula.stickynotes.CREATE_NOTE";
     public static final String DATA = "DATA";
     public static final String COLOR = "COLOR";
 
@@ -55,15 +57,15 @@ public class WindowService extends Service {
                 windowManager.removeView(v);
     }
 
-
-
     private class DataReceiver extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
             final View note = View.inflate(context, R.layout.sticky_note, null);
             ((TextView)note.findViewById(R.id.note_text)).setText(intent.getStringExtra(DATA));
-            View background = note.findViewById(R.id.note_background);
+            TextView shadow = (TextView)note.findViewById(R.id.note_invisible_text);
+            shadow.setText(intent.getStringExtra(DATA));
+            View background = note.findViewById(R.id.note_text);
             switch(intent.getIntExtra(COLOR, 0)){
                 case 0:
                     background.setBackgroundColor(context.getResources().getColor(R.color.color_1));
@@ -89,7 +91,17 @@ public class WindowService extends Service {
 
             params.gravity = Gravity.TOP | Gravity.LEFT;
             params.x = 0;
-            params.y = 100;
+            params.y = -100;
+
+            ValueAnimator animator = ObjectAnimator.ofInt(0, 100);
+            animator.setDuration(300);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    params.y = (int)(valueAnimator.getAnimatedFraction() * 100);
+                    windowManager.updateViewLayout(note, params);
+                }
+            });
 
             note.setOnTouchListener(new View.OnTouchListener() {
                 private int initialX;
@@ -124,6 +136,7 @@ public class WindowService extends Service {
 
             notes.add(note);
             windowManager.addView(note, params);
+            animator.start();
         }
     }
 }
