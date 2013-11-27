@@ -1,21 +1,15 @@
 package com.mattkula.DemoApp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.mattkula.DemoApp.dialogs.ColorPickerDialog;
 import com.mattkula.DemoApp.interfaces.ColorPickerListener;
 
 public class MainActivity extends Activity implements View.OnClickListener, ColorPickerListener{
-
-    public enum Color {
-        RED, GREEN, BLUE, PURPLE
-    }
 
     private EditText editNoteText;
     private Button btnAddNote;
@@ -51,56 +45,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Colo
     }
 
     @Override
-    public void onColorPicked(MainActivity.Color c) {
-        if(c.equals(Color.RED))
+    public void onColorPicked(ColorPickerDialog.Color c) {
+        if(c.equals(ColorPickerDialog.Color.RED))
             btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_red));
-        if(c.equals(Color.GREEN))
+        if(c.equals(ColorPickerDialog.Color.GREEN))
             btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_green));
-        if(c.equals(Color.BLUE))
+        if(c.equals(ColorPickerDialog.Color.BLUE))
             btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_blue));
-        if(c.equals(Color.PURPLE))
+        if(c.equals(ColorPickerDialog.Color.PURPLE))
             btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_purple));
-    }
-
-    private class ColorPickerDialog extends DialogFragment implements View.OnClickListener{
-
-        ColorPickerListener listener;
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            listener = (ColorPickerListener) activity;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            View v = getLayoutInflater().inflate(R.layout.dialog_color_picker, null);
-            v.findViewById(R.id.btn_color_red).setOnClickListener(this);
-            v.findViewById(R.id.btn_color_blue).setOnClickListener(this);
-            v.findViewById(R.id.btn_color_green).setOnClickListener(this);
-            v.findViewById(R.id.btn_color_purple).setOnClickListener(this);
-            builder.setView(v);
-            return builder.create();
-        }
-
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()){
-                case R.id.btn_color_red:
-                    listener.onColorPicked(Color.RED);
-                    break;
-                case R.id.btn_color_green:
-                    listener.onColorPicked(Color.GREEN);
-                    break;
-                case R.id.btn_color_blue:
-                    listener.onColorPicked(Color.BLUE);
-                    break;
-                case R.id.btn_color_purple:
-                    listener.onColorPicked(Color.PURPLE);
-                    break;
-            }
-            this.getDialog().cancel();
-        }
     }
 }

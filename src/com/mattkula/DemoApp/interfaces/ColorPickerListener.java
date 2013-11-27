@@ -1,6 +1,6 @@
 package com.mattkula.DemoApp.interfaces;
 
-import com.mattkula.DemoApp.MainActivity;
+import com.mattkula.DemoApp.dialogs.ColorPickerDialog;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,5 +10,5 @@ import com.mattkula.DemoApp.MainActivity;
  * To change this template use File | Settings | File Templates.
  */
 public interface ColorPickerListener {
-    public void onColorPicked(MainActivity.Color c);
+    public void onColorPicked(ColorPickerDialog.Color c);
 }
