@@ -19,6 +19,7 @@ public class WindowService extends Service {
 
     public static final String ACTION = "CREATE_NOTE";
     public static final String DATA = "DATA";
+    public static final String COLOR = "COLOR";
 
     private WindowManager windowManager;
     private BroadcastReceiver receiver;
@@ -62,6 +63,21 @@ public class WindowService extends Service {
         public void onReceive(Context context, Intent intent) {
             final View note = View.inflate(context, R.layout.sticky_note, null);
             ((TextView)note.findViewById(R.id.note_text)).setText(intent.getStringExtra(DATA));
+            View background = note.findViewById(R.id.note_background);
+            switch(intent.getIntExtra(COLOR, 0)){
+                case 0:
+                    background.setBackgroundColor(0xffff0000);
+                    break;
+                case 1:
+                    background.setBackgroundColor(0xff00ff00);
+                    break;
+                case 2:
+                    background.setBackgroundColor(0xff0000ff);
+                    break;
+                case 3:
+                    background.setBackgroundColor(0xffff00ff);
+                    break;
+            }
 
             final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,

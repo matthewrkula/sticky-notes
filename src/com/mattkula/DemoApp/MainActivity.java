@@ -15,6 +15,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Colo
     private Button btnAddNote;
     private Button btnChooseColor;
 
+    ColorPickerDialog.Color chosenColor = ColorPickerDialog.Color.RED;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Colo
             if(editNoteText.getText().toString().length() > 0){
                 Intent i = new Intent(WindowService.ACTION);
                 i.putExtra(WindowService.DATA, editNoteText.getText().toString());
+                i.putExtra(WindowService.COLOR, chosenColor.ordinal());
                 sendBroadcast(i);
             }
         }else if(view == btnChooseColor){
@@ -46,6 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Colo
 
     @Override
     public void onColorPicked(ColorPickerDialog.Color c) {
+        chosenColor = c;
         if(c.equals(ColorPickerDialog.Color.RED))
             btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_red));
         if(c.equals(ColorPickerDialog.Color.GREEN))
