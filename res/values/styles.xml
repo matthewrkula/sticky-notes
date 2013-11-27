@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ColorButton">
+        <item name="android:layout_width">50dip</item>
+        <item name="android:layout_height">50dip</item>
+        <item name="android:layout_marginTop">10dip</item>
+        <item name="android:layout_marginBottom">10dip</item>
+        <item name="android:layout_weight">0.25</item>
+        <item name="android:background">@null</item>
+    </style>
+</resources>

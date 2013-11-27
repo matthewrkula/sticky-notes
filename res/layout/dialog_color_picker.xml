@@ -7,46 +7,26 @@
 
     <ImageButton
         android:id="@+id/btn_color_red"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:background="@null"
         android:src="@drawable/circle_red"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip"
-        android:layout_weight=".25"
+        style="@style/ColorButton"
         />
 
     <ImageButton
         android:id="@+id/btn_color_blue"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:background="@null"
         android:src="@drawable/circle_blue"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip"
-        android:layout_weight=".25"
+        style="@style/ColorButton"
         />
 
     <ImageButton
         android:id="@+id/btn_color_green"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:background="@null"
         android:src="@drawable/circle_green"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip"
-        android:layout_weight=".25"
+        style="@style/ColorButton"
         />
 
     <ImageButton
         android:id="@+id/btn_color_purple"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
-        android:layout_marginTop="10dip"
-        android:background="@null"
         android:src="@drawable/circle_purple"
-        android:layout_marginBottom="10dip"
-        android:layout_weight=".25"
+        style="@style/ColorButton"
         />
 
 </LinearLayout>

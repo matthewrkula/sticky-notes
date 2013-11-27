@@ -10,12 +10,11 @@ import com.mattkula.DemoApp.R;
 import com.mattkula.DemoApp.interfaces.ColorPickerListener;
 
 /**
- * Created with IntelliJ IDEA.
  * User: Matt
  * Date: 11/26/13
  * Time: 5:59 PM
- * To change this template use File | Settings | File Templates.
  */
+
 public class ColorPickerDialog extends DialogFragment implements View.OnClickListener{
 
     public enum Color {
@@ -27,7 +26,11 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        listener = (ColorPickerListener) activity;
+        try{
+            listener = (ColorPickerListener) activity;
+        }catch(ClassCastException ex){
+            throw new RuntimeException("Activity must implement ColorPickerListener");
+        }
     }
 
     @Override
