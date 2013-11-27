@@ -7,7 +7,6 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import com.mattkula.DemoApp.R;
-import com.mattkula.DemoApp.interfaces.ColorPickerListener;
 
 /**
  * User: Matt
@@ -18,7 +17,11 @@ import com.mattkula.DemoApp.interfaces.ColorPickerListener;
 public class ColorPickerDialog extends DialogFragment implements View.OnClickListener{
 
     public enum Color {
-        RED, GREEN, BLUE, PURPLE
+        COLOR_1, COLOR_2, COLOR_3, COLOR_4
+    }
+
+    public interface ColorPickerListener {
+        public void onColorPicked(ColorPickerDialog.Color c);
     }
 
     ColorPickerListener listener;
@@ -49,16 +52,16 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.btn_color_red:
-                listener.onColorPicked(Color.RED);
+                listener.onColorPicked(Color.COLOR_1);
                 break;
             case R.id.btn_color_green:
-                listener.onColorPicked(Color.GREEN);
+                listener.onColorPicked(Color.COLOR_2);
                 break;
             case R.id.btn_color_blue:
-                listener.onColorPicked(Color.BLUE);
+                listener.onColorPicked(Color.COLOR_3);
                 break;
             case R.id.btn_color_purple:
-                listener.onColorPicked(Color.PURPLE);
+                listener.onColorPicked(Color.COLOR_4);
                 break;
         }
         this.getDialog().cancel();

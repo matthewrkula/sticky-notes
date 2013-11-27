@@ -7,15 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.mattkula.DemoApp.dialogs.ColorPickerDialog;
-import com.mattkula.DemoApp.interfaces.ColorPickerListener;
 
-public class MainActivity extends Activity implements View.OnClickListener, ColorPickerListener{
+public class MainActivity extends Activity implements View.OnClickListener, ColorPickerDialog.ColorPickerListener{
 
     private EditText editNoteText;
     private Button btnAddNote;
     private Button btnChooseColor;
 
-    ColorPickerDialog.Color chosenColor = ColorPickerDialog.Color.RED;
+    ColorPickerDialog.Color chosenColor = ColorPickerDialog.Color.COLOR_1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Colo
                 i.putExtra(WindowService.COLOR, chosenColor.ordinal());
                 sendBroadcast(i);
             }
-        }else if(view == btnChooseColor){
+        }
+
+        if(view == btnChooseColor) {
             ColorPickerDialog diag = new ColorPickerDialog();
             diag.show(getFragmentManager(), "colors");
         }
@@ -50,13 +51,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Colo
     @Override
     public void onColorPicked(ColorPickerDialog.Color c) {
         chosenColor = c;
-        if(c.equals(ColorPickerDialog.Color.RED))
-            btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_red));
-        if(c.equals(ColorPickerDialog.Color.GREEN))
-            btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_green));
-        if(c.equals(ColorPickerDialog.Color.BLUE))
-            btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_blue));
-        if(c.equals(ColorPickerDialog.Color.PURPLE))
-            btnChooseColor.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_purple));
+        if(c.equals(ColorPickerDialog.Color.COLOR_1))
+            setColorBackground(R.drawable.circle_color_1);
+        if(c.equals(ColorPickerDialog.Color.COLOR_2))
+            setColorBackground(R.drawable.circle_color_2);
+        if(c.equals(ColorPickerDialog.Color.COLOR_3))
+            setColorBackground(R.drawable.circle_color_3);
+        if(c.equals(ColorPickerDialog.Color.COLOR_4))
+            setColorBackground(R.drawable.circle_color_4);
+    }
+
+    private void setColorBackground(int drawable){
+        btnChooseColor.setBackgroundDrawable(getResources().getDrawable(drawable));
     }
 }

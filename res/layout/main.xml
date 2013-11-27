@@ -17,7 +17,7 @@
         android:id="@+id/btn_choose_color"
         android:layout_width="50dip"
         android:layout_height="50dip"
-        android:background="@drawable/circle_red"
+        android:background="@drawable/circle_color_1"
         android:layout_marginTop="10dip"
         />
 

@@ -66,16 +66,16 @@ public class WindowService extends Service {
             View background = note.findViewById(R.id.note_background);
             switch(intent.getIntExtra(COLOR, 0)){
                 case 0:
-                    background.setBackgroundColor(0xffff0000);
+                    background.setBackgroundColor(context.getResources().getColor(R.color.color_1));
                     break;
                 case 1:
-                    background.setBackgroundColor(0xff00ff00);
+                    background.setBackgroundColor(context.getResources().getColor(R.color.color_2));
                     break;
                 case 2:
-                    background.setBackgroundColor(0xff0000ff);
+                    background.setBackgroundColor(context.getResources().getColor(R.color.color_3));
                     break;
                 case 3:
-                    background.setBackgroundColor(0xffff00ff);
+                    background.setBackgroundColor(context.getResources().getColor(R.color.color_4));
                     break;
             }
 
