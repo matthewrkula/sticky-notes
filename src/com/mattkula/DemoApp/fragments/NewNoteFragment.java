@@ -18,7 +18,6 @@ import com.mattkula.DemoApp.dialogs.ColorPickerDialog;
  * User: Matt
  * Date: 12/1/13
  * Time: 5:01 PM
- * To change this template use File | Settings | File Templates.
  */
 public class NewNoteFragment extends Fragment {
 
@@ -50,7 +49,7 @@ public class NewNoteFragment extends Fragment {
         return v;
     }
 
-    View.OnClickListener clickListener = new View.OnClickListener(){
+    private View.OnClickListener clickListener = new View.OnClickListener(){
         @Override
         public void onClick(View view){
             if(view == btnAddNote){
@@ -71,7 +70,7 @@ public class NewNoteFragment extends Fragment {
         }
     };
 
-    ColorPickerDialog.ColorPickerListener colorListener = new ColorPickerDialog.ColorPickerListener() {
+    private ColorPickerDialog.ColorPickerListener colorListener = new ColorPickerDialog.ColorPickerListener() {
         @Override
         public void onColorPicked(ColorPickerDialog.Color c) {
             chosenColor = c;
