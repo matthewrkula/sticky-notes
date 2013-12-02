@@ -19,7 +19,6 @@ import com.mattkula.DemoApp.fragments.NoteListFragment;
  * User: Matt
  * Date: 12/1/13
  * Time: 4:41 PM
- * To change this template use File | Settings | File Templates.
  */
 public class MainActivity extends Activity implements NewNoteFragment.OnNewNoteAddedListener{
 
@@ -41,25 +40,7 @@ public class MainActivity extends Activity implements NewNoteFragment.OnNewNoteA
         ft.commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.menu_new_note:
-                slideIn();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void slideIn(){
-
         if(!newNoteIsShowing){
             View v = fragment.getView();
 
@@ -69,7 +50,7 @@ public class MainActivity extends Activity implements NewNoteFragment.OnNewNoteA
             anim.setDuration(300);
 
             ObjectAnimator anim2 = ObjectAnimator.ofFloat(shadowOverlay, "alpha", 1.0f);
-            anim.setDuration(300);
+            anim2.setDuration(300);
 
             AnimatorSet set = new AnimatorSet();
             set.playTogether(anim, anim2);
@@ -99,13 +80,14 @@ public class MainActivity extends Activity implements NewNoteFragment.OnNewNoteA
         AnimatorSet set = new AnimatorSet();
         set.playTogether(anim, anim2);
         set.start();
+
+        newNoteIsShowing = false;
     }
 
     @Override
     public void onBackPressed() {
         if(newNoteIsShowing){
             slideOut();
-            newNoteIsShowing = false;
         }
         super.onBackPressed();
     }
@@ -115,7 +97,23 @@ public class MainActivity extends Activity implements NewNoteFragment.OnNewNoteA
         if(newNoteIsShowing){
             getFragmentManager().popBackStack();
             slideOut();
-            newNoteIsShowing = false;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_new_note:
+                slideIn();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
