@@ -1,6 +1,5 @@
 package com.mattkula.DemoApp;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,9 +62,9 @@ public class WindowService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             final View note = View.inflate(context, R.layout.sticky_note, null);
+            Log.e("AAAA", note.findViewById(R.id.note_text).toString());
             ((TextView)note.findViewById(R.id.note_text)).setText(intent.getStringExtra(DATA));
-            TextView shadow = (TextView)note.findViewById(R.id.note_invisible_text);
-            shadow.setText(intent.getStringExtra(DATA));
+            ((TextView)note.findViewById(R.id.note_invisible_text)).setText(intent.getStringExtra(DATA));
             View background = note.findViewById(R.id.note_text);
             switch(intent.getIntExtra(COLOR, 0)){
                 case 0:
@@ -93,12 +93,12 @@ public class WindowService extends Service {
             params.x = 0;
             params.y = -100;
 
-            ValueAnimator animator = ObjectAnimator.ofInt(0, 100);
+            ValueAnimator animator = ValueAnimator.ofInt(0, 100);
             animator.setDuration(300);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    params.y = (int)(valueAnimator.getAnimatedFraction() * 100);
+                    params.y = (int) (valueAnimator.getAnimatedFraction() * 100);
                     windowManager.updateViewLayout(note, params);
                 }
             });
@@ -108,6 +108,8 @@ public class WindowService extends Service {
                 private int initialY;
                 private float initialTouchX;
                 private float initialTouchY;
+
+                private boolean isOnScreen = true;
 
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -123,10 +125,12 @@ public class WindowService extends Service {
                         case MotionEvent.ACTION_MOVE:
                             params.x = initialX + (int) (motionEvent.getRawX() - initialTouchX);
                             params.y = initialY + (int) (motionEvent.getRawY() - initialTouchY);
-                            windowManager.updateViewLayout(note, params);
+                            if(isOnScreen)
+                                windowManager.updateViewLayout(note, params);
                             if(params.y > windowManager.getDefaultDisplay().getHeight() - 150){
                                 windowManager.removeView(note);
                                 notes.remove(note);
+                                isOnScreen = false;
                             }
                             return true;
                     }

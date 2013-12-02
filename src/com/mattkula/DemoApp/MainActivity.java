@@ -1,67 +1,121 @@
 package com.mattkula.DemoApp;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import com.mattkula.DemoApp.dialogs.ColorPickerDialog;
+import com.mattkula.DemoApp.data.Note;
+import com.mattkula.DemoApp.fragments.NewNoteFragment;
+import com.mattkula.DemoApp.fragments.NoteListFragment;
 
-public class MainActivity extends Activity implements View.OnClickListener, ColorPickerDialog.ColorPickerListener{
+/**
+ * Created with IntelliJ IDEA.
+ * User: Matt
+ * Date: 12/1/13
+ * Time: 4:41 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class MainActivity extends Activity implements NewNoteFragment.OnNewNoteAddedListener{
 
-    private EditText editNoteText;
-    private Button btnAddNote;
-    private Button btnChooseColor;
+    NoteListFragment fragment;
+    View shadowOverlay;
 
-    ColorPickerDialog.Color chosenColor = ColorPickerDialog.Color.COLOR_1;
+    boolean newNoteIsShowing = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
 
-        btnAddNote = (Button)findViewById(R.id.btn_add_note);
-        editNoteText = (EditText)findViewById(R.id.text_input);
-        btnChooseColor = (Button)findViewById(R.id.btn_choose_color);
+        fragment = new NoteListFragment();
+        shadowOverlay = findViewById(R.id.shadow);
 
-        btnAddNote.setOnClickListener(this);
-        btnChooseColor.setOnClickListener(this);
-
-        startService(new Intent(this, WindowService.class));
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_holder, fragment);
+        ft.commit();
     }
 
     @Override
-    public void onClick(View view) {
-        if(view == btnAddNote){
-            if(editNoteText.getText().toString().length() > 0){
-                Intent i = new Intent(WindowService.ACTION);
-                i.putExtra(WindowService.DATA, editNoteText.getText().toString());
-                i.putExtra(WindowService.COLOR, chosenColor.ordinal());
-                sendBroadcast(i);
-            }
-        }
-
-        if(view == btnChooseColor) {
-            ColorPickerDialog diag = new ColorPickerDialog();
-            diag.show(getFragmentManager(), "colors");
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
-    public void onColorPicked(ColorPickerDialog.Color c) {
-        chosenColor = c;
-        if(c.equals(ColorPickerDialog.Color.COLOR_1))
-            setColorBackground(R.drawable.circle_color_1);
-        if(c.equals(ColorPickerDialog.Color.COLOR_2))
-            setColorBackground(R.drawable.circle_color_2);
-        if(c.equals(ColorPickerDialog.Color.COLOR_3))
-            setColorBackground(R.drawable.circle_color_3);
-        if(c.equals(ColorPickerDialog.Color.COLOR_4))
-            setColorBackground(R.drawable.circle_color_4);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_new_note:
+                slideIn();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    private void setColorBackground(int drawable){
-        btnChooseColor.setBackgroundDrawable(getResources().getDrawable(drawable));
+    private void slideIn(){
+
+        if(!newNoteIsShowing){
+            View v = fragment.getView();
+
+            PropertyValuesHolder scaleX =  PropertyValuesHolder.ofFloat("scaleX", 0.8f);
+            PropertyValuesHolder scaleY =  PropertyValuesHolder.ofFloat("scaleY", 0.8f);
+            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(v, scaleX, scaleY);
+            anim.setDuration(300);
+
+            ObjectAnimator anim2 = ObjectAnimator.ofFloat(shadowOverlay, "alpha", 1.0f);
+            anim.setDuration(300);
+
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(anim, anim2);
+            set.start();
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.animator.slide_in, 0, 0, R.animator.slide_out);
+            ft.add(R.id.move_to_back_container, new NewNoteFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+
+            newNoteIsShowing = true;
+        }
+    }
+
+    private void slideOut(){
+        View v = fragment.getView();
+
+        PropertyValuesHolder scaleX =  PropertyValuesHolder.ofFloat("scaleX", 1f);
+        PropertyValuesHolder scaleY =  PropertyValuesHolder.ofFloat("scaleY", 1f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(v, scaleX, scaleY);
+        anim.setDuration(300);
+
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(shadowOverlay, "alpha", 0);
+        anim.setDuration(300);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(anim, anim2);
+        set.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(newNoteIsShowing){
+            slideOut();
+            newNoteIsShowing = false;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onNewNoteAdded(Note n) {
+        if(newNoteIsShowing){
+            getFragmentManager().popBackStack();
+            slideOut();
+            newNoteIsShowing = false;
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.mattkula.DemoApp.dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -27,16 +26,6 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
     ColorPickerListener listener;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try{
-            listener = (ColorPickerListener) activity;
-        }catch(ClassCastException ex){
-            throw new RuntimeException("Activity must implement ColorPickerListener");
-        }
-    }
-
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_color_picker, null);
@@ -44,8 +33,12 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
         v.findViewById(R.id.btn_color_blue).setOnClickListener(this);
         v.findViewById(R.id.btn_color_green).setOnClickListener(this);
         v.findViewById(R.id.btn_color_purple).setOnClickListener(this);
-        builder.setView(v);
+        builder.setView(v).setTitle("Choose a color");
         return builder.create();
+    }
+
+    public void setColorPickerListener(ColorPickerListener l){
+        this.listener = l;
     }
 
     @Override
